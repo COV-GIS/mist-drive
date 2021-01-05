@@ -6,8 +6,9 @@ import esriConfig from '@arcgis/core/config';
 import Map from '@arcgis/core/Map';
 import MapView from '@arcgis/core/views/MapView';
 import FeatureLayer from '@arcgis/core/layers/FeatureLayer';
-import GroupLayer from '@arcgis/core/layers/GroupLayer';
 import Legend from '@arcgis/core/widgets/Legend';
+
+import TaxLotPopup from 'cov/popups/TaxLotPopup';
 
 esriConfig.portalUrl = 'https://gisportal.vernonia-or.gov/portal';
 
@@ -42,11 +43,7 @@ const view = new MapView({
         },
         title: 'Tax Lots',
         definitionExpression: 'VERNONIA <> 0',
-      }),
-      new GroupLayer({
-        portalItem: {
-          id: '027c75b51e1048eaa0cdf760218ccdfc',
-        },
+        popupTemplate: new TaxLotPopup(),
       }),
     ],
   }),

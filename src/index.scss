@@ -110,8 +110,8 @@ $include_TimeSlider: false !default;
 // $include_Zoom: false !default;
 
 // API font family.
-// @import url("https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap");
-// $font-family: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol" !default;
+@import url("https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap");
+$font-family: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol" !default;
 
 // Core will do the rest.
 // This is the file to start with to understand the API theming system or to make advanced theming changes.
@@ -125,4 +125,6 @@ body .esri-view {
   margin: 0;
   height: 100%;
   width: 100%;
+  font-family: $font-family;
+  font-size: 14px;
 }
