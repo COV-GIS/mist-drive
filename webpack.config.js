@@ -59,6 +59,7 @@ const HtmlWebPackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HTMLInlineCSSWebpackPlugin = require('html-inline-css-webpack-plugin').default;
 const ArcGISPlugin = require('@arcgis/webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 const { GenerateSW } = require('workbox-webpack-plugin');
 
 /**
@@ -191,9 +192,7 @@ module.exports = (_, args) => {
 
     // Webpack plugins.
     plugins: [
-      new CleanWebpackPlugin({
-        cleanStaleWebpackAssets: false,
-      }),
+      new CleanWebpackPlugin(),
 
       new ArcGISPlugin({ locales: ['en'] }),
 
@@ -222,6 +221,13 @@ module.exports = (_, args) => {
         filter: (fileName) => {
           return fileName.includes('index');
         },
+      }),
+
+      new CopyPlugin({
+        patterns: [{
+          context: 'src/assets/',
+          from: '**/*',
+        }],
       }),
     ],
   };
