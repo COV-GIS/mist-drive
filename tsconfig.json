@@ -11,5 +11,14 @@
     "experimentalDecorators": true,
     "jsx": "react",
     "jsxFactory": "tsx"
-  }
+  },
+  "types": [
+    "cov"
+  ],
+  "include": [
+    "src/**/*",
+  ],
+  "files": [
+    "src/cov/interfaces.d.ts"
+  ]
 }

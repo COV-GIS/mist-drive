@@ -1,3 +1,5 @@
+const path = require('path');
+
 /**
  * Application configuration.
  */
@@ -37,7 +39,7 @@ const productionDevtool = 'source-map';
 // Useful for aliasing packages or paths in source.
 // https://webpack.js.org/configuration/resolve/#resolvealias
 const resolveAlias = {
-  // myPackage: path.resolve(__dirname, 'path/to/package/'),
+  cov: path.resolve(__dirname, 'src/cov'),
 };
 
 // Workbox service workers.
@@ -58,7 +60,6 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HTMLInlineCSSWebpackPlugin = require('html-inline-css-webpack-plugin').default;
 const ArcGISPlugin = require('@arcgis/webpack-plugin');
 const { GenerateSW } = require('workbox-webpack-plugin');
-const path = require('path');
 
 /**
  * Webpack configuration.
@@ -91,7 +92,7 @@ module.exports = (_, args) => {
       historyApiFallback: true,
       compress: true,
       https: true,
-      port: 3001,
+      port: 8080,
       writeToDisk: true,
       open: true,
     },
@@ -180,6 +181,7 @@ module.exports = (_, args) => {
     // Configure how modules are resolved.
     resolve: {
       modules: [
+        path.resolve(__dirname, 'cov'),
         path.resolve(__dirname, 'src'),
         path.resolve(__dirname, 'node_modules'),
       ],
