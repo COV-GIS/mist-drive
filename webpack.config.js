@@ -182,7 +182,6 @@ module.exports = (_, args) => {
     // Configure how modules are resolved.
     resolve: {
       modules: [
-        path.resolve(__dirname, 'cov'),
         path.resolve(__dirname, 'src'),
         path.resolve(__dirname, 'node_modules'),
       ],

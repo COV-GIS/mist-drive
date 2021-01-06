@@ -1,7 +1,18 @@
 {
-  "private": true,
+  "name": "mist-drive",
+  "version": "0.0.1",
+  "description": "City of Vernonia ArcGIS JavaScript template application with Typescript, Sass and Webpack.",
+  "author": {
+    "name": "COV-GIS",
+    "url": "https://www.vernonia-or.gov/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/COV-GIS/mist-drive.git"
+  },
+  "license": "Apache-2.0",
   "dependencies": {
-    "@arcgis/core": "^4.18.0"
+    "@arcgis/core": "^4.18.1"
   },
   "devDependencies": {
     "@arcgis/webpack-plugin": "^4.18.0",
