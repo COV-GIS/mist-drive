@@ -1,4 +1,4 @@
-import <%name%> from './<%name%>';
+// import <%name%> from './<%name%>';
 
 describe('cov/widgets/<%name%>', () => {
   test('1 should not equal 2', () => {
