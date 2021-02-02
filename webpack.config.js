@@ -1,23 +1,33 @@
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const HtmlWebPackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const HTMLInlineCSSWebpackPlugin = require('html-inline-css-webpack-plugin').default;
+const ArcGISPlugin = require('@arcgis/webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
+const { GenerateSW } = require('workbox-webpack-plugin');
 const path = require('path');
 
 /**
- * Application configuration.
+ * Application options.
  */
 
 // Application information.
-const title = 'ArcGIS Typescript, Sass and Webpack Template';
-const description = 'ArcGIS JavaScript template application with Typescript, Sass and Webpack.';
+const title = 'Mist Drive';
+const description = 'City of Vernonia ArcGIS JavaScript template application.';
 const themeColor = '#FFFFFF';
-const deployUrl = 'https://localhost:3001/';
+const deployUrl = 'https://oregon-american-mill.netlify.app';
 const appImageUrl = 'socialcard.png';
 
 // HTML plugin options for index.ejs. Primarily for title and meta tags.
 // Mixes in...be careful.
 // https://github.com/jantimon/html-webpack-plugin#options
 const indexHtml = {
+  hash: true,
   title,
   meta: {
-    'viewport': 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no',
+    viewport: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no',
     'mobile-web-app-capable': 'yes',
     'apple-mobile-web-app-capable': 'yes',
     'theme-color': themeColor,
@@ -30,41 +40,53 @@ const indexHtml = {
   },
 };
 
-// Webpack devtool.
+/**
+ * Webpack options.
+ */
+
+// Output public path.
+// Single page/routing apps must set to '/'.
+// https://webpack.js.org/configuration/output/#outputpublicpath
+const outputPublicPath = '';
+
+// Dev server options.
+// https://webpack.js.org/configuration/dev-server/
+const devServer = {
+  contentBase: path.join(__dirname, 'dist'),
+  // historyApiFallback: true, // single page/routing apps
+  compress: true,
+  https: true,
+  port: 8080,
+  open: true,
+};
+
+// Webpack devtool for source map generation.
 // https://webpack.js.org/configuration/devtool/
 const developmentDevtool = 'eval';
-const productionDevtool = 'source-map';
+const productionDevtool = false;
 
 // Add any aliases to config.resolve.
 // Useful for aliasing packages or paths in source.
 // https://webpack.js.org/configuration/resolve/#resolvealias
 const resolveAlias = {
-  cov: path.resolve(__dirname, 'src/cov'),
+  app: path.resolve(__dirname, 'src'),
+  cov: path.resolve(__dirname, 'node_modules/cov-arcgis-esm/src/'),
 };
+
+// inline css in index.html
+// Important! Will almost certainly cause request issues for CSS resources if app is not root of domain, `dist` is copied, or proxied into another site.
+const inlineCss = true;
 
 // Workbox service workers.
 // Important! Read up on and understand Workbox before use: https://developers.google.com/web/tools/workbox
-// There are browser cache and other repercussions for deploying an app with Workbox.
+// There are potential browser cache pitfalls and other repercussions for deploying an app with Workbox.
 const workbox = false;
 // Exclude files or patterns from Workbox.
 const workboxExcludes = [];
 
 /**
- * Webpack plugins.
- */
-const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
-const TerserPlugin = require('terser-webpack-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const HtmlWebPackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const HTMLInlineCSSWebpackPlugin = require('html-inline-css-webpack-plugin').default;
-const ArcGISPlugin = require('@arcgis/webpack-plugin');
-const CopyPlugin = require('copy-webpack-plugin');
-const { GenerateSW } = require('workbox-webpack-plugin');
-
-/**
  * Webpack configuration.
- * 
+ *
  * Editing only required to add additional plugins or effect how Webpack operates.
  */
 module.exports = (_, args) => {
@@ -76,7 +98,7 @@ module.exports = (_, args) => {
 
     // Entry points.
     entry: {
-      index: ['./src/index.scss', './src/index.ts']
+      index: ['./src/index.scss', '@babel/polyfill', './src/index.ts'],
     },
 
     // Output parameters.
@@ -84,19 +106,11 @@ module.exports = (_, args) => {
       path: path.join(__dirname, 'dist'),
       filename: '[name].[chunkhash].js',
       chunkFilename: 'chunks/[id].js',
-      publicPath: '',
+      publicPath: outputPublicPath,
     },
 
-    // Development server parameters.
-    devServer: {
-      contentBase: path.join(__dirname, 'dist'),
-      historyApiFallback: true,
-      compress: true,
-      https: true,
-      port: 8080,
-      writeToDisk: true,
-      open: true,
-    },
+    // Development server parameters (provided in Webpack options above).
+    devServer,
 
     devtool: mode === 'development' ? developmentDevtool : productionDevtool,
 
@@ -117,12 +131,17 @@ module.exports = (_, args) => {
       ],
       runtimeChunk: {
         name: 'runtime',
-      }
+      },
     },
 
     // Module handling and loaders.
     module: {
       rules: [
+        {
+          test: /\.(ts|js)x?$/,
+          exclude: /node_modules/,
+          loader: 'babel-loader',
+        },
         {
           test: /\.tsx?$/,
           use: [
@@ -138,9 +157,9 @@ module.exports = (_, args) => {
           test: /\.(ttf|eot|svg|png|jpg|gif|ico|wsv|otf|woff(2)?)(\?[a-z0-9]+)?$/,
           use: [
             {
-              loader: 'file-loader'
-            }
-          ]
+              loader: 'file-loader',
+            },
+          ],
         },
         {
           test: /\.scss$/,
@@ -159,13 +178,16 @@ module.exports = (_, args) => {
               options: {
                 sourceMap: true,
                 debug: mode === 'development',
-                join: (rul_uri, rul_base) => { // args must be included
+                join: (_rul_uri, _rul_base) => {
+                  // args must be included
                   return (assetPath, absolutePath) => {
                     // ArcGISPlugin copies assets and cannot be resolved when using api sass
                     // replace relative path with absolute path in `dist` so files can be found for resolving
-                    return absolutePath.includes('@arcgis/core') ? assetPath.replace('../', './assets/esri/themes/') : assetPath;
-                  }
-                }
+                    return absolutePath.includes('@arcgis/core')
+                      ? assetPath.replace('../', './assets/esri/themes/')
+                      : assetPath;
+                  };
+                },
               },
             },
             {
@@ -176,18 +198,22 @@ module.exports = (_, args) => {
             },
           ],
         },
-      ]
+      ],
     },
 
     // Configure how modules are resolved.
     resolve: {
-      modules: [
-        path.resolve(__dirname, 'src'),
-        path.resolve(__dirname, 'node_modules'),
-      ],
+      modules: [path.resolve(__dirname, 'src'), path.resolve(__dirname, 'node_modules')],
       alias: resolveAlias || {},
       extensions: ['.ts', '.tsx', '.js', '.scss', '.css'],
     },
+
+    ignoreWarnings: [
+      {
+        module: /\/@arcgis\/core\//,
+        message: /Critical dependency: the request of a dependency is an expression/,
+      }
+    ],
 
     // Webpack plugins.
     plugins: [
@@ -199,7 +225,6 @@ module.exports = (_, args) => {
         template: './src/index.ejs',
         filename: 'index.html',
         chunksSortMode: 'none',
-        hash: true,
         mode: mode,
         showErrors: mode === 'development',
         ...indexHtml,
@@ -212,21 +237,25 @@ module.exports = (_, args) => {
       }),
 
       new MiniCssExtractPlugin({
-        filename: "[name].[chunkhash].css",
-        chunkFilename: "[id].css"
+        filename: '[name].[chunkhash].css',
+        chunkFilename: '[id].css',
       }),
 
-      new HTMLInlineCSSWebpackPlugin({
-        filter: (fileName) => {
-          return fileName.includes('index');
-        },
-      }),
+      ...(inlineCss ? [
+        new HTMLInlineCSSWebpackPlugin({
+          filter: (fileName) => {
+            return fileName.includes('index');
+          },
+        }),
+      ] : []),
 
       new CopyPlugin({
-        patterns: [{
-          context: 'src/assets/',
-          from: '**/*',
-        }],
+        patterns: [
+          {
+            context: 'src/assets/',
+            from: '**/*',
+          },
+        ],
       }),
     ],
   };

@@ -1,61 +1,48 @@
 import esriConfig from '@arcgis/core/config';
-// import Portal from '@arcgis/core/portal/Portal';
-// import OAuthInfo from '@arcgis/core/identity/OAuthInfo';
-// import OAuthViewModel from 'cov/viewModels/OAuthViewModel';
 
 import Map from '@arcgis/core/Map';
 import MapView from '@arcgis/core/views/MapView';
-import FeatureLayer from '@arcgis/core/layers/FeatureLayer';
-import Legend from '@arcgis/core/widgets/Legend';
+import { Extent } from '@arcgis/core/geometry';
 
-import TaxLotPopup from 'cov/popups/TaxLotPopup';
+import Basemap from '@arcgis/core/Basemap';
+
+import FullMap from 'cov/layouts/FullView';
+import MadeWith from 'cov/widgets/MadeWith';
 
 esriConfig.portalUrl = 'https://gisportal.vernonia-or.gov/portal';
 
-// const oAuthViewModel = new OAuthViewModel({
-//   portal: new Portal(),
-//   oAuthInfo: new OAuthInfo({
-//     portalUrl: esriConfig.portalUrl,
-//     appId: 'L8fvJsX7U6RlN1Pt',
-//     popup: true,
-//   }),
-// });
-
-// oAuthViewModel.portal.load()
-//   .then(() => {
-//     oAuthViewModel.load();
-//   });
-
 const view = new MapView({
-  container: document.createElement('div'),
-  center: [-123.183, 45.862],
-  zoom: 15,
   map: new Map({
-    basemap: {
+    basemap: new Basemap({
       portalItem: {
-        id: 'b6130a13beb74026b89960fbd424021f',
+        id: 'f36cd213cc934d2391f58f389fc9eaec',
       },
-    },
-    layers: [
-      new FeatureLayer({
-        portalItem: {
-          id: '856881c08fd0486b891be75baa9d2bfd',
-        },
-        title: 'Tax Lots',
-        definitionExpression: 'VERNONIA <> 0',
-        popupTemplate: new TaxLotPopup(),
-      }),
-    ],
+    }),
+    layers: [],
   }),
+  zoom: 15,
+  center: [-123.185, 45.859],
+  constraints: {
+    rotationEnabled: false,
+  },
 });
 
-document.body.append(view.container);
-
-view.when(() => {
+view.when((): void => {
   view.ui.add(
-    new Legend({
-      view,
+    new MadeWith({
+      color: '#323232',
+      size: '14px',
     }),
-    'top-right',
+    'bottom-left',
   );
 });
+
+const app = new FullMap({
+  view,
+  title: 'Mist Drive',
+  container: document.createElement('div'),
+});
+
+document.body.append(app.container);
+
+console.log(view);

@@ -8,17 +8,23 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
+    "importHelpers": true,
+    "paths": {
+      "tslib" : ["./node_modules/tslib/tslib.d.ts"]
+    },
     "experimentalDecorators": true,
     "jsx": "react",
     "jsxFactory": "tsx"
   },
   "types": [
-    "cov"
+    "esri",
+    "app"
   ],
   "include": [
     "src/**/*",
+    "node_modules/cov-arcgis-esm/src/**/*"
   ],
   "files": [
-    "src/cov/interfaces.d.ts"
+    "node_modules/cov-arcgis-esm/src/interfaces.d.ts"
   ]
 }
