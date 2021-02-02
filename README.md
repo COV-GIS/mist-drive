@@ -11,7 +11,10 @@ City of Vernonia ArcGIS JavaScript template application.
 
 This repository is setup as a template.
 
-Create a new repository with this as a project.
+1. Click the `Use this template` button.
+1. Create a new repository.
+1. Clone.
+1. Install... 
 
 ```shell
 npm install
