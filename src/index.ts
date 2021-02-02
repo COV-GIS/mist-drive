@@ -2,7 +2,6 @@ import esriConfig from '@arcgis/core/config';
 
 import Map from '@arcgis/core/Map';
 import MapView from '@arcgis/core/views/MapView';
-import { Extent } from '@arcgis/core/geometry';
 
 import Basemap from '@arcgis/core/Basemap';
 

@@ -97,7 +97,7 @@
     "ignorePatterns": [
       "webpack.config.js",
       "*.d.ts",
-      "template/widget/",
+      "template/",
       "dist/"
     ],
     "rules": {

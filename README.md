@@ -1,5 +1,10 @@
 # mist-drive
 
+[![build status][travis-img]][travis-url]
+
+[travis-img]: https://img.shields.io/travis/CityOfVernonia/mist-drive/main.svg?style=flat-square
+[travis-url]: https://travis-ci.com/CityOfVernonia/mist-drive
+
 City of Vernonia ArcGIS JavaScript template application.
 
 ### Usage
