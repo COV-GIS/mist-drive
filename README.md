@@ -1,20 +1,37 @@
 # mist-drive
-City of Vernonia ArcGIS JavaScript template application with Typescript, Sass and Webpack.
 
-Bootstrap:
+City of Vernonia ArcGIS JavaScript template application.
+
+### Usage
+
+This repository is setup as a template.
+
+Create a new repository with this as a project.
 
 ```shell
 npm install
 ```
 
-Development:
+### Development
 
 ```shell
 npm start
 ```
 
-Build:
+### Scaffold a New Widget
+
+```shell
+npm run widget -- --name=<YourWidgetName>
+```
+
+### Build
 
 ```shell
 npm run build
+```
+
+### Test
+
+```shell
+npm run test
 ```

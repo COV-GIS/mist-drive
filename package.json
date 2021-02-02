@@ -57,12 +57,11 @@
   },
   "scripts": {
     "build": "webpack --mode production",
-    "start": "webpack serve --mode development",
+    "lint": "eslint . --ext .js,.ts,.tsx",
     "prettier": "prettier --write \"src/**/*.ts?(x)\"",
     "prettier-webpack": "prettier --write webpack.config.js",
-    "lint": "eslint . --ext .js,.ts,.tsx",
-    "test": "jest --coverage --passWithNoTests",
-    "precommit": "lint-staged",
+    "start": "webpack serve --mode development",
+    "test": "npm run prettier && npm run lint && jest --coverage --passWithNoTests && npm run build",
     "widget": "node template/index.js"
   },
   "babel": {
