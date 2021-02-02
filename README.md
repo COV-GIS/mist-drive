@@ -1,6 +1,6 @@
 # mist-drive
 
-[![build status][travis-img]][travis-url]
+[![build status][travis-img]][travis-url] ![GitHub tag (latest SemVer)](https://img.shields.io/github/v/tag/CityOfVernonia/mist-drive?color=success&style=flat-square)
 
 [travis-img]: https://img.shields.io/travis/CityOfVernonia/mist-drive/main.svg?style=flat-square
 [travis-url]: https://travis-ci.com/CityOfVernonia/mist-drive
