@@ -43,5 +43,3 @@ const app = new FullMap({
 });
 
 document.body.append(app.container);
-
-console.log(view);

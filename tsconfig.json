@@ -18,7 +18,7 @@
   },
   "types": [
     "esri",
-    "app"
+    "cov"
   ],
   "include": [
     "src/**/*",
