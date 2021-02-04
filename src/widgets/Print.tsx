@@ -1,3 +1,6 @@
+/**
+ * Simple print widget in calcite (not production ready).
+ */
 import { whenOnce } from '@arcgis/core/core/watchUtils';
 
 import '@esri/calcite-components';
@@ -24,9 +27,8 @@ const CSS = {
   base: 'esri-widget cov-print',
   results: 'cov-print--results',
   result: 'cov-print--result',
-  iconPrinting: 'esri-icon-loading-indicator esri-rotating',
-  iconDownload: 'esri-icon-download',
-  iconError: 'esri-icon-error',
+  spin: 'esri-rotating',
+  icon: 'cov-print--result-icon',
 };
 
 let KEY = 0;
@@ -114,24 +116,31 @@ export default class Print extends Widget {
 
   private _createResults(): tsx.JSX.Element[] {
     return this._results.map((result: PrintResult) => {
-      switch (result.state) {
+      const { state, titleText, url } = result;
+      switch (state) {
         case 'printing':
           return (
             <div key={KEY++} class={CSS.result}>
-              <i class={CSS.iconPrinting}></i>
-              <span>{result.titleText}</span>
+              <calcite-icon class={this.classes(CSS.spin, CSS.icon)} icon="spinner" scale="s"></calcite-icon>
+              {titleText}
             </div>
           );
         case 'printed':
           return (
-            <div key={KEY++} class={CSS.result}>
-              <a href={result.url} target="_blank">
-                {result.titleText}
-              </a>
+            <div key={KEY++} class={CSS.result} title={`Download ${titleText}`}>
+              <calcite-icon class={CSS.icon} icon="download" scale="s"></calcite-icon>
+              <calcite-link href={url} target="_blank">
+                {titleText}
+              </calcite-link>
             </div>
           );
         case 'error':
-          return <div key={KEY++} class={CSS.result}></div>;
+          return (
+            <div key={KEY++} class={CSS.result} style="color:var(--calcite-ui-red-1)" title="Printing failed">
+              <calcite-icon class={CSS.icon} icon="exclamationMarkCircle" scale="s"></calcite-icon>
+              {titleText}
+            </div>
+          );
         default:
           return <div></div>;
       }
