@@ -8,6 +8,8 @@ import Basemap from '@arcgis/core/Basemap';
 import FullMap from 'cov/layouts/FullView';
 import MadeWith from 'cov/widgets/MadeWith';
 
+import Print from './widgets/Print';
+
 esriConfig.portalUrl = 'https://gisportal.vernonia-or.gov/portal';
 
 const view = new MapView({
@@ -33,6 +35,14 @@ view.when((): void => {
       size: '14px',
     }),
     'bottom-left',
+  );
+  view.ui.add(
+    new Print({
+      view,
+      printServiceUrl:
+        'https://gisportal.vernonia-or.gov/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task',
+    }),
+    'top-right',
   );
 });
 
