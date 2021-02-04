@@ -74,7 +74,7 @@ const resolveAlias = {
 
 // inline css in index.html
 // Important! Will almost certainly cause request issues for CSS resources if app is not root of domain, `dist` is copied, or proxied into another site.
-const inlineCss = true;
+const inlineCss = false;
 
 // Workbox service workers.
 // Important! Read up on and understand Workbox before use: https://developers.google.com/web/tools/workbox

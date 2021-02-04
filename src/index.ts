@@ -5,8 +5,7 @@ import MapView from '@arcgis/core/views/MapView';
 
 import Basemap from '@arcgis/core/Basemap';
 
-import FullMap from 'cov/layouts/FullView';
-import MadeWith from 'cov/widgets/MadeWith';
+import Calcite from './widgets/Calcite';
 
 esriConfig.portalUrl = 'https://gisportal.vernonia-or.gov/portal';
 
@@ -26,19 +25,10 @@ const view = new MapView({
   },
 });
 
-view.when((): void => {
-  view.ui.add(
-    new MadeWith({
-      color: '#323232',
-      size: '14px',
-    }),
-    'bottom-left',
-  );
-});
+view.when((): void => {});
 
-const app = new FullMap({
+const app = new Calcite({
   view,
-  title: 'Mist Drive',
   container: document.createElement('div'),
 });
 

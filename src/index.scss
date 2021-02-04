@@ -136,6 +136,4 @@ a {
   }
 }
 
-@import "~cov-arcgis-esm/src/layouts/FullView/styles/FullView";
-
-@import "~cov-arcgis-esm/src/widgets/MadeWith/styles/MadeWith";
+@import "./widgets/Calcite/styles/Calcite.scss";

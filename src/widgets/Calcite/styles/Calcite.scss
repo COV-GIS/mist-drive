@@ -1,0 +1,12 @@
+.cov-calcite {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-flow: row;
+  justify-content: space-between;
+
+  .esri-view {
+    width: 100%;
+    height: 100%;
+  }
+}
