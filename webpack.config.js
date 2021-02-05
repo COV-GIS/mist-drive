@@ -6,6 +6,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HTMLInlineCSSWebpackPlugin = require('html-inline-css-webpack-plugin').default;
 const ArcGISPlugin = require('@arcgis/webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
+const HtmlReplaceWebpackPlugin = require('html-replace-webpack-plugin');
 const { GenerateSW } = require('workbox-webpack-plugin');
 const path = require('path');
 
@@ -58,6 +59,7 @@ const devServer = {
   https: true,
   port: 8080,
   open: true,
+  writeToDisk: true,
 };
 
 // Webpack devtool for source map generation.
@@ -71,10 +73,6 @@ const productionDevtool = false;
 const resolveAlias = {
   cov: path.resolve(__dirname, 'node_modules/cov-arcgis-esm/src/'),
 };
-
-// inline css in index.html
-// Important! Will almost certainly cause request issues for CSS resources if app is not root of domain, `dist` is copied, or proxied into another site.
-const inlineCss = true;
 
 // Workbox service workers.
 // Important! Read up on and understand Workbox before use: https://developers.google.com/web/tools/workbox
@@ -211,7 +209,7 @@ module.exports = (_, args) => {
       {
         module: /\/@arcgis\/core\//,
         message: /Critical dependency: the request of a dependency is an expression/,
-      }
+      },
     ],
 
     // Webpack plugins.
@@ -240,20 +238,26 @@ module.exports = (_, args) => {
         chunkFilename: '[id].css',
       }),
 
-      ...(inlineCss ? [
-        new HTMLInlineCSSWebpackPlugin({
-          filter: (fileName) => {
-            return fileName.includes('index');
-          },
-        }),
-      ] : []),
+      new HTMLInlineCSSWebpackPlugin({
+        filter: (fileName) => {
+          return fileName.includes('index');
+        },
+      }),
+
+      // fix inlined esri asset path
+      new HtmlReplaceWebpackPlugin([
+        {
+          pattern: '../assets/esri/',
+          replacement: './assets/esri/',
+        },
+      ]),
 
       new CopyPlugin({
         patterns: [
           {
             context: 'node_modules/@esri/calcite-components/dist/calcite',
             from: '**/*',
-            to: 'calcite'
+            to: 'calcite',
           },
         ],
       }),
