@@ -93,7 +93,7 @@ $include_NavigationToggle: false !default;
 $include_OpacitySlider: false !default;
 $include_Print: false !default;
 // $include_Popup: false !default;
-$include_ScaleBar: false !default;
+// $include_ScaleBar: false !default;
 $include_ScaleRangeSlider: false !default;
 $include_Search: false !default;
 $include_SizeSlider: false !default;
@@ -136,6 +136,6 @@ a {
   }
 }
 
-@import "~cov-arcgis-esm/src/layouts/FullView/styles/FullView";
+@import "~cov-arcgis-esm/src/Vernonia/styles/Vernonia";
 
-@import "~cov-arcgis-esm/src/widgets/MadeWith/styles/MadeWith";
+@import "~cov-arcgis-esm/src/widgets/CalciteNavigation/styles/CalciteNavigation";

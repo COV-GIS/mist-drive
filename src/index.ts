@@ -5,8 +5,7 @@ import MapView from '@arcgis/core/views/MapView';
 
 import Basemap from '@arcgis/core/Basemap';
 
-import FullMap from 'cov/layouts/FullView';
-import MadeWith from 'cov/widgets/MadeWith';
+import Vernonia from 'cov/Vernonia';
 
 esriConfig.portalUrl = 'https://gisportal.vernonia-or.gov/portal';
 
@@ -26,19 +25,10 @@ const view = new MapView({
   },
 });
 
-view.when((): void => {
-  view.ui.add(
-    new MadeWith({
-      color: '#323232',
-      size: '14px',
-    }),
-    'bottom-left',
-  );
-});
-
-const app = new FullMap({
+const app = new Vernonia({
   view,
   title: 'Mist Drive',
+  viewTitle: true,
   container: document.createElement('div'),
 });
 
