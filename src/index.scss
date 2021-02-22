@@ -125,15 +125,6 @@ body {
   margin: 0;
   height: 100%;
   width: 100%;
-  font-family: $font-family;
-  font-size: 14px;
-}
-
-a {
-  color: $interactive-font-color;
-  &:hover {
-    color: $interactive-font-color--hover;
-  }
 }
 
 @import "~cov-arcgis-esm/src/Vernonia/styles/Vernonia";
