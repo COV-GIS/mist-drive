@@ -28,7 +28,7 @@
     "css-loader": "^5.0.2",
     "css-minimizer-webpack-plugin": "^1.2.0",
     "eslint": "^7.20.0",
-    "eslint-config-prettier": "^8.0.0",
+    "eslint-config-prettier": "^7.2.0",
     "eslint-plugin-prettier": "^3.3.1",
     "file-loader": "^6.2.0",
     "fse": "^4.0.1",
